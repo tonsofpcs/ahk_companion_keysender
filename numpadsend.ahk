@@ -9,7 +9,10 @@ Server.OnAccept := Func("OnAccept")
 Server.Bind(["0.0.0.0", 1337])
 Server.Listen()
 
-MsgBox, Serving on port 1337`nClose to ExitApp
+MsgBox, Serving on port 1337
+SitHere: 
+Sleep, 100000
+Goto, SitHere
 ExitApp
 
 OnAccept(Server)
@@ -17,9 +20,11 @@ OnAccept(Server)
 	static Counter := 0
 	
 	Sock := Server.Accept()
+	
+	LoopRecv:
 	Request := StrSplit(Sock.RecvLine(), " ")
 
-    Sock.Disconnect()
+    ;Sock.Disconnect()
 
 	if (Request[1] = "SEND")
 	{
@@ -52,7 +57,8 @@ OnAccept(Server)
         }
         Send, {NumpadEnter}
 
-		return
+		;return
 	}
+	Goto, LoopRecv
     
 }
